@@ -1,0 +1,16 @@
+Server started on: 192.168.88.28:8177
+chat Connected with ('192.168.88.28', 55406)
+Received: {'username': 'gg', 'password': 'cbd3cfb9b9f51bbbfbf08759e243f5b3519cbf6ecc219ee95fe7c667e32c0a8d'}
+this is auth
+chat Connected with ('192.168.88.28', 55420)
+Received: {'action_for_chat_server': 'MyUSER', 'username': 'gg'}
+Received: {'action_for_chat_server': 'ReadyToQ', 'username': 'gg'}
+Received: {'text': 'Hello chat GPT', '_show_ip': 'False', 'name': 'gg', 'to': 'public'}
+gg
+Received: {'text': 'using logs you can understand how to make root client!', '_show_ip': 'False', 'name': 'gg', 'to': 'public'}
+gg
+Received: {'username': 'gg', 'action': 'update_data:_show_ip:True'}
+this is auth
+adding
+('192.168.88.28', 55406) disconnected hard
+('192.168.88.28', 55420) disconnected hard

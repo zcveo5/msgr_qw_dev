@@ -1,0 +1,19 @@
+[ STDOUT ] ~ LOG STARTED ~
+[ STDOUT ][loader][info] launcher&exception hook v.0
+[ STDOUT ][loader][info] win release 10
+[ STDOUT ] - ~ * PROGRAM * ~ - 
+[ STDOUT ][msgr.py]MSGR QW BY BEBRA TECH (C) 2023 - 2025
+[ STDOUT ][msgr.py][info] init window and vars
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] destroying all widgets
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_lbl
+[ STDOUT ][ui.py][recovery_lbl] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt1
+[ STDOUT ][ui.py][recovery_butt1] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt2
+[ STDOUT ][ui.py][recovery_butt2] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt3
+[ STDOUT ][ui.py][recovery_butt3] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt4
+[ STDOUT ][ui.py][recovery_butt4] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt5
+[ STDOUT ][ui.py][recovery_butt5] build pack

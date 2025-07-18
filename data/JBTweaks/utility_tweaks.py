@@ -1,0 +1,1 @@
+Button(text='Quit this mainloop', command=main.quit).pack(anchor='se')

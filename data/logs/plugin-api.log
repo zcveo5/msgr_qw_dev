@@ -1,0 +1,15 @@
+[info] compiling plugins
+[info] compiled plugin backup
+[error] invalid plugin btac, skip ([Errno 2] No such file or directory: './plugins/btac/metadata.json')
+[info] compiled plugin bypass_server_connect
+[error] invalid plugin core, skip ([Errno 2] No such file or directory: './plugins/core/metadata.json')
+[info] compiled plugin multi_nc
+[error] invalid plugin Test, skip (module 'plugins.Test.mod' has no attribute '')
+[info] pre-loading plugins
+[info] backup pre-loaded
+[info] multi.nc pre-loaded
+[info] completed
+[info] auto loading mod backup
+[info] completed in 1sec
+[info] auto loading mod multi.nc
+[info] completed in 0sec

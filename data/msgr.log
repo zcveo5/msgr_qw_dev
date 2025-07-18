@@ -1,0 +1,67 @@
+[ STDOUT ] ~ LOG STARTED ~
+[ STDOUT ][loader][info] launcher&exception hook v.0
+[ STDOUT ][loader][info] win release 10
+[ STDOUT ] - ~ * PROGRAM * ~ - 
+[ STDOUT ][msgr.py]MSGR QW BY BEBRA TECH (C) 2023 - 2025
+[ STDOUT ][msgr.py][info] init window and vars
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] destroying all widgets
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_lbl
+[ STDOUT ][ui.py][recovery_lbl] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt1
+[ STDOUT ][ui.py][recovery_butt1] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt2
+[ STDOUT ][ui.py][recovery_butt2] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt3
+[ STDOUT ][ui.py][recovery_butt3] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt4
+[ STDOUT ][ui.py][recovery_butt4] build pack
+[ STDOUT ][ui.py][win msgr-qw-no-install-script] creating widget recovery_butt5
+[ STDOUT ][ui.py][recovery_butt5] build pack
+[ STDOUT ][loader][error] can't invoke "wm" command: application has been destroyed
+[ STDOUT ][loader][traceback]
+Traceback (most recent call last):
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\loader.py", line 226, in <module>
+    app = __import__(path)
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\msgr.py", line 1519, in <module>
+    load_lbl = main.create('load_lbl', Label, text='Loading...', bg='black', fg='white',
+                     font=('Consolas', 9), justify=tk.LEFT)
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\data\lib\ui.py", line 50, in wrapper
+    return attr(*args, **kwargs)
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\data\lib\ui.py", line 293, in create
+    print_adv(f'[win {self.title()}] creating widget {name}')
+                      ~~~~~~~~~~^^
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\data\lib\ui.py", line 50, in wrapper
+    return attr(*args, **kwargs)
+  File "C:\Program Files\Python313\Lib\tkinter\__init__.py", line 2415, in wm_title
+    return self.tk.call('wm', 'title', self._w, string)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_tkinter.TclError: can't invoke "wm" command: application has been destroyed
+[ STDOUT ]<class '_tkinter.TclError'>:can't invoke "wm" command: application has been destroyed
+[ STDOUT ][FatalTraceback] Traceback (most recent call last):
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\loader.py", line 226, in <module>
+    app = __import__(path)
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\msgr.py", line 1519, in <module>
+    load_lbl = main.create('load_lbl', Label, text='Loading...', bg='black', fg='white',
+                     font=('Consolas', 9), justify=tk.LEFT)
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\data\lib\ui.py", line 50, in wrapper
+    return attr(*args, **kwargs)
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\data\lib\ui.py", line 293, in create
+    print_adv(f'[win {self.title()}] creating widget {name}')
+                      ~~~~~~~~~~^^
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\data\lib\ui.py", line 50, in wrapper
+    return attr(*args, **kwargs)
+  File "C:\Program Files\Python313\Lib\tkinter\__init__.py", line 2415, in wm_title
+    return self.tk.call('wm', 'title', self._w, string)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_tkinter.TclError: can't invoke "wm" command: application has been destroyed
+[ STDOUT ]===== TRACEBACK =====
+Traceback (most recent call last):
+  File "C:\Users\zcveo\Desktop\MSGR\msgr_remake\loader.py", line 247, in <module>
+    thread.join()
+    ~~~~~~~~~~~^^
+  File "C:\Program Files\Python313\Lib\threading.py", line 1094, in join
+    self._handle.join(timeout)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyboardInterrupt
+
+===== END =====

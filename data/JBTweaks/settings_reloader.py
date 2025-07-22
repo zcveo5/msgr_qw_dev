@@ -2,7 +2,7 @@ import tkinter
 
 setts_orig = Settings
 
-class ModSettings(setts_orig):
+class SettingsReloaded(setts_orig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._base_widgets.append(Button(self._o, text='JailBreak Tweak Reloader',
@@ -16,7 +16,7 @@ class ModSettings(setts_orig):
     #                x=5, y=400, anchor='w')
 
 
-Settings = ModSettings
+Settings = SettingsReloaded
 
 
 def _main():

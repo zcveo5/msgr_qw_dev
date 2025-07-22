@@ -10,7 +10,7 @@ if not os.path.exists('./data/settings_conf.json'):
 conf = json.load(open('./data/settings_conf.json'))
 _conf = conf.copy()
 
-class SettingsMod(Settings):
+class RemoveDebugFromSettingMod(Settings):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -19,14 +19,12 @@ class SettingsMod(Settings):
         Button(self.window_locale, text='Manage What widgets shown on side panel', command=self.ui_custom, bg=default_bg, fg=default_fg, font=font_theme).pack(anchor='nw', padx=3)
 
     def _create_base(self):
-        self.create(Label(), x=-100, y=-100, name='loaded')
-        y = 30
         for wid in self._base_widgets:
             if locale.get_key(wid['text']) not in conf:
                 conf.update({locale.get_key(wid['text']): True})
             if conf[locale.get_key(wid['text'])]:
-                self.create(self.create_copy(wid), 5, y, f'Settings_Element:{y // 30}', anchor='nw')
-                y += 30
+                wid.pack(anchor='nw')
+
 
     def ui_custom(self):
         def switch(event):
@@ -50,4 +48,4 @@ class SettingsMod(Settings):
 
 
 
-Settings = SettingsMod
+Settings = RemoveDebugFromSettingMod

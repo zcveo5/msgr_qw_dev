@@ -1,64 +1,31 @@
-[ui.py][win MSGR QW - Loading] creating widget load_lbl
+[ui.py][win None] creating widget load_lbl
 [ui.py][load_lbl] build place
-[ui.py][win MSGR QW - Loading] creating widget loading_pb
+[ui.py][win None] creating widget loading_pb
 [ui.py][loading_pb] build place
-[ui.py][win MSGR QW - Loading] creating widget exit_button
+[ui.py][win None] creating widget exit_button
 [ui.py][exit_button] build place
-[ui.py][win MSGR QW - Loading] creating widget action_load
+[ui.py][win None] creating widget action_load
 [ui.py][action_load] build place
-[ui.py][win MSGR QW - Loading] destroying all widgets
-[ui.py][win MSGR QW - Loading] Destroying: load_lbl
+[ui.py][win None] destroying all widgets
+[ui.py][win None] Destroying: load_lbl
 [ui.py][load_lbl] load_lbl destroyed
-[ui.py][win MSGR QW - Loading] Destroying: loading_pb
+[ui.py][win None] Destroying: loading_pb
 [ui.py][loading_pb] loading_pb destroyed
-[ui.py][win MSGR QW - Loading] Destroying: exit_button
+[ui.py][win None] Destroying: exit_button
 [ui.py][exit_button] exit_button destroyed
-[ui.py][win MSGR QW - Loading] Destroying: action_load
+[ui.py][win None] Destroying: action_load
 [ui.py][action_load] action_load destroyed
-[ui.py][win Мессенджер] creating widget chat_select
+[ui.py][win None] creating widget chat_select
 [ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
-[ui.py][win Мессенджер] destroying all widgets
-[ui.py][win Мессенджер] Destroying: chat_select
+[ui.py][win None] creating widget chat_select
+[ui.py][win None] destroying all widgets
+[ui.py][win None] Destroying: chat_select
 [ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
+[ui.py][win None] creating widget chat_select
 [ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
+[ui.py][win None] creating widget chat_select
 [ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
+[ui.py][win None] creating widget chat_select
+[ui.py][win None] destroying all widgets
+[ui.py][win None] Destroying: chat_select
 [ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
-[ui.py][win Мессенджер] creating widget back_to_chat_select
-[ui.py][back_to_chat_select] build pack
-[ui.py][win Мессенджер] creating widget chat_label
-[ui.py][chat_label] build pack
-[ui.py][win Мессенджер] creating widget send_entry
-[ui.py][win Мессенджер] creating widget send_private_button
-[ui.py][back_to_chat_select] back_to_chat_select destroyed
-[ui.py][chat_label] chat_label destroyed
-[ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
-[ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
-[ui.py][win Мессенджер] creating widget back_to_chat_select
-[ui.py][back_to_chat_select] build pack
-[ui.py][win Мессенджер] creating widget chat_label
-[ui.py][chat_label] build pack
-[ui.py][win Мессенджер] creating widget send_entry
-[ui.py][send_entry] send_entry destroyed
-[ui.py][win Мессенджер] creating widget send_private_button
-[ui.py][send_private_button] send_private_button destroyed
-[ui.py][back_to_chat_select] back_to_chat_select destroyed
-[ui.py][chat_label] chat_label destroyed
-[ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
-[ui.py][chat_select] chat_select destroyed
-[ui.py][win Мессенджер] creating widget chat_select
-[ui.py][win Мессенджер] creating widget back_to_chat_select
-[ui.py][back_to_chat_select] build pack
-[ui.py][win Мессенджер] creating widget chat_label
-[ui.py][chat_label] build pack
-[ui.py][win Мессенджер] creating widget send_entry
-[ui.py][send_entry] send_entry destroyed
-[ui.py][win Мессенджер] creating widget send_private_button
-[ui.py][send_private_button] send_private_button destroyed

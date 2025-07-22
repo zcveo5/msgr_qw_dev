@@ -12,7 +12,7 @@ _ADVLOG = False # DO ADVLOG
 _MODULE_LOG = True # DO ANY THIS MODULE LOGS
 
 _windows = []
-_widgets = []
+_widgets = {}
 app_root_window = None
 root_scaling = 1.0
 
@@ -116,7 +116,11 @@ class Widget(AdvLog):
         self._name = name
         self._place_mode = 'NotPlaced'
         self.destroyed = False
-        _widgets.append(self)
+        if 'widgets' not in _widgets:
+            _widgets['widgets'] = {}
+            _widgets['widgets'][self._name] = self
+        else:
+            _widgets['widgets'][self._name] = self
 
     def build(self, mode: Literal['place', 'grid', 'pack'], **kwargs):
         print_adv(f'[{self._name}] build {mode}')
@@ -515,30 +519,41 @@ class SidePanel(SidePanelWidget):
 
 
 class Popup(tkinter.Frame):
-    def __init__(self, master: Win | tkinter.Tk = app_root_window, x: int = 0, y: int = 0, size=None,
+    def __init__(self, master: Win | tkinter.Tk = app_root_window, x: int = -1, y: int = -1, size=None,
                  style=None, title: str = 'Popup'):
         if size is None:
             size = [300, 300]
-        if style is None:
-            style = ['black', 'white', 'Consolas 9']
+        if master is None:
+            master = app_root_window
+        if x == -1:
+            x = master.winfo_width() // 2
+        if y == -1:
+            y = master.winfo_height() // 2
         self.style = style
         self.size = size
-        super().__init__(master, bg=style[0], width=size[0], height=size[1], highlightthickness=2,
-                         highlightcolor=style[1])
+        super().__init__(master, width=size[0], height=size[1], highlightthickness=2)
+        if style is not None:
+            self.configure(bg=style[0], highlightcolor=style[1])
 
         self.pack_propagate(False)
-        self.close_btn = Button(self, text='X', bg=style[0], fg=style[1], font=style[2], command=self.destroy)
+        self.close_btn = Button(self, text='X', command=self.place_forget)
         self.close_btn.pack(anchor='ne')
-        self.title_lbl = Label(self, text=title, bg=style[0], fg=style[1], font=style[2])
+        self.title_lbl = Label(self, text=title)
         self.title_lbl.place(x=3, y=0)
+        if style is not None:
+            self.close_btn.configure(bg=style[0], fg=style[1], font=style[2])
+            self.title_lbl.configure(bg=style[0], fg=style[1], font=style[2])
 
         self.bind('<Button-1>', self._start_move)
         self.bind('<B1-Motion>', self._move)
 
         self._start_x = 0
         self._start_y = 0
-
-        _widgets.append(self)
+        if 'popups' in _widgets:
+            _widgets['popups'][self.title_lbl['text']] = self
+        else:
+            _widgets['popups'] = {}
+            _widgets['popups'][self.title_lbl['text']] = self
 
         self.place(x=x, y=y, anchor='center')
 
@@ -548,14 +563,19 @@ class Popup(tkinter.Frame):
         self._start_y = event.y
 
     def _move(self, event):
-        x = (event.widget.winfo_x() + (event.x - self._start_x)) + (self.size[0] // 2)
-        y = (event.widget.winfo_y() + (event.y - self._start_y)) + (self.size[1] // 2)
-        if not self.master.winfo_width() - (self.size[0]) > x - (self.size[0] // 2) > 0:
+        x = (event.widget.winfo_x() + (event.x - self._start_x)) + (self.winfo_width() // 2)
+        y = (event.widget.winfo_y() + (event.y - self._start_y)) + (self.winfo_height() // 2)
+        if not self.master.winfo_width() - (self.winfo_width()) > x - (self.winfo_width() // 2) > 0:
             x = self.winfo_x() + (self.winfo_width() // 2)
-        if not self.master.winfo_height() - (self.size[1]) > y - (self.size[1] // 2) > 0:
+        if not self.master.winfo_height() - (self.winfo_height()) > y - (self.winfo_height() // 2) > 0:
             y = self.winfo_y() + (self.winfo_height() // 2)
         #self.title['text'] = f'{self.master.winfo_width()} > {x} > 0, {self.master.winfo_height()} > {y} > 0'
         self.place(x=x, y=y)
+
+    def update_info(self):
+        self._start_x = 0
+        self._start_y = 0
+        self.update_idletasks()
 
     def resizable(self, x, y):
         if x or y:

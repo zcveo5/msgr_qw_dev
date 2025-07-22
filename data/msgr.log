@@ -4,24 +4,50 @@
 [ STDOUT ] - ~ * PROGRAM * ~ - 
 [ STDOUT ][msgr.py]MSGR QW BY BEBRA TECH (C) 2023 - 2025
 [ STDOUT ][msgr.py][info] init window and vars
-[ STDOUT ][ui.py][win MSGR QW - Loading] creating widget load_lbl
+[ STDOUT ][ui.py][win None] creating widget load_lbl
+[ STDOUT ]load_lbl is already created
 [ STDOUT ][ui.py][load_lbl] build place
-[ STDOUT ][ui.py][win MSGR QW - Loading] creating widget loading_pb
+[ STDOUT ][ui.py][win None] creating widget loading_pb
 [ STDOUT ][ui.py][loading_pb] build place
 [ STDOUT ][msgr.py][info] created loading screen
-[ STDOUT ][ui.py][win MSGR QW - Loading] creating widget exit_button
+[ STDOUT ][ui.py][win None] creating widget exit_button
 [ STDOUT ][ui.py][exit_button] build place
-[ STDOUT ][ui.py][win MSGR QW - Loading] creating widget action_load
+[ STDOUT ][ui.py][win None] creating widget action_load
 [ STDOUT ][ui.py][action_load] build place
 [ STDOUT ][msgr.py][info] created loading_screen buttons
 [ STDOUT ][msgr.py][info] inited vars and ui-elements
 [ STDOUT ][msgr.py][info] loading data.nc
 [ STDOUT ][msgr.py][info] loaded
 [ STDOUT ][msgr.py][info] setting SCREEN_SETTINGS
-[ STDOUT ]`````````````````````````````[<data.lib.ui.Win object .>], 1.4
+[ STDOUT ]`````````````````````````````[<jailbreak.ModWin object .>], 1.4
 [ STDOUT ][msgr.py][info] loading locale
 [ STDOUT ][msgr.py][info] locale_fl locale/ru/locale.cfg
 [ STDOUT ][msgr.py][info] language ru
+[ STDOUT ]$JB Loading Tweaks...
+[ STDOUT ]$JB Running as msgr
+[ STDOUT ]$JB Detected a_compatability_tweak.py
+[ STDOUT ]$JB Detected encrypted_msgs.py
+[ STDOUT ]$JB Detected list_of_tweaks.py
+[ STDOUT ]$JB Detected login_tweaks.py
+[ STDOUT ]$JB Detected log_read.py
+[ STDOUT ]$JB Detected remove_debug_from_settings.py
+[ STDOUT ]$JB Detected settings_reloader.py
+[ STDOUT ]$JB Detected taskbar_for_popups.py
+[ STDOUT ]$JB Detected terminal.py
+[ STDOUT ]$JB Detected trach.py
+[ STDOUT ]$JB Detected utility_tweaks.py
+[ STDOUT ]====== EXECUTING ======
+[ STDOUT ]$JB Executing encrypted_msgs.py 
+[ STDOUT ]# Thanks for use JBEM #
+[ STDOUT ]$JB Executing login_tweaks.py (!)
+[ STDOUT ]$JB Executing log_read.py (!)
+[ STDOUT ]# In Non-legacy mode, log_read is not needed #
+[ STDOUT ]$JB Executing remove_debug_from_settings.py (!)
+[ STDOUT ]$JB Executing settings_reloader.py (!)
+[ STDOUT ]$JB Executing taskbar_for_popups.py (!)
+[ STDOUT ]$JB Executing terminal.py 
+[ STDOUT ]$JB Executing utility_tweaks.py (!)
+[ STDOUT ]$JB Tweaks Loaded!
 [ STDOUT ][msgr.py][info] init theme
 [ STDOUT ][msgr.py][info] loading theme hh
 [ STDOUT ][msgr.py][info] setup theme for loading screen
@@ -32,102 +58,62 @@
 [ STDOUT ][msgr.py][info] connecting to servers
 [ STDOUT ][msgr.py][info] connecting to account server
 [ STDOUT ][msgr.py]bt data
-[ STDOUT ][msgr.py](True, {'status': 'ok', 'answer': {'password': ' ', 'global_block': 'False', '_show_ip': 'False', '_admin': 'False'}})
 [ STDOUT ][msgr.py][info] connecting to chat server
+[ STDOUT ][info] Servers connection Completed
 [ STDOUT ][msgr.py][info] loading plugins
 [ STDOUT ][msgr.py][warning] not detected plugin_api module
 [ STDOUT ][msgr.py][info] init theme
 [ STDOUT ][msgr.py][info] loading theme hh
 [ STDOUT ][msgr.py][info] finishing
-[ STDOUT ][ui.py][win MSGR QW - Loading] destroying all widgets
-[ STDOUT ][ui.py][win MSGR QW - Loading] Destroying: load_lbl
+[ STDOUT ][ui.py][win None] destroying all widgets
+[ STDOUT ][ui.py][win None] Destroying: load_lbl
 [ STDOUT ][ui.py][load_lbl] load_lbl destroyed
-[ STDOUT ][ui.py][win MSGR QW - Loading] Destroying: loading_pb
+[ STDOUT ][ui.py][win None] Destroying: loading_pb
 [ STDOUT ][ui.py][loading_pb] loading_pb destroyed
-[ STDOUT ][ui.py][win MSGR QW - Loading] Destroying: exit_button
+[ STDOUT ][ui.py][win None] Destroying: exit_button
 [ STDOUT ][ui.py][exit_button] exit_button destroyed
-[ STDOUT ][ui.py][win MSGR QW - Loading] Destroying: action_load
+[ STDOUT ][ui.py][win None] Destroying: action_load
 [ STDOUT ][ui.py][action_load] action_load destroyed
-[ STDOUT ]`````````````````````````````[<data.lib.ui.Win object .>], 1.4
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
+[ STDOUT ]`````````````````````````````[<jailbreak.ModWin object .>], 1.4
+[ STDOUT ][ui.py][win None] creating widget chat_select
 [ STDOUT ][msgr.py][info] ===================== LOADING CHAT SELECT
 [ STDOUT ][msgr.py][info] loading theme hh
 [ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
+[ STDOUT ][ui.py][win None] creating widget chat_select
 [ STDOUT ][msgr.py][info] ===================== LOADING CHAT SELECT
 [ STDOUT ][msgr.py][info] loading theme hh
-[ STDOUT ][ui.py][win messendzher] destroying all widgets
-[ STDOUT ][ui.py][win messendzher] Destroying: chat_select
+[ STDOUT ][ui.py][win None] destroying all widgets
+[ STDOUT ][ui.py][win None] Destroying: chat_select
 [ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ]`````````````````````````````[<data.lib.ui.Win object .>], 1.4
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
+[ STDOUT ]Loaded!
+[ STDOUT ]`````````````````````````````[<jailbreak.ModWin object .>], 1.4
+[ STDOUT ][ui.py][win None] creating widget chat_select
 [ STDOUT ][msgr.py][info] ===================== LOADING CHAT SELECT
 [ STDOUT ][msgr.py][info] loading theme hh
+[ STDOUT ]nastroyki
 [ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
+[ STDOUT ][ui.py][win None] creating widget chat_select
 [ STDOUT ][msgr.py][info] ===================== LOADING CHAT SELECT
 [ STDOUT ][msgr.py][info] loading theme hh
 [ STDOUT ][msgr.py][info] main thread started
 [ STDOUT ][msgr.py][info] work - true
 [ STDOUT ][msgr.py][info] starting crt
 [ STDOUT ][msgr.py][info] started
+[ STDOUT ]nastroyki
 [ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
+[ STDOUT ][ui.py][win None] creating widget chat_select
 [ STDOUT ][msgr.py][info] ===================== LOADING CHAT SELECT
 [ STDOUT ][msgr.py][info] loading theme hh
 [ STDOUT ][info] READY
 [ STDOUT ][msgr.py][info] successful start with reinit_ui_counter = 5
-[ STDOUT ]('General',)
+[ STDOUT ]$JB Final mainloop
+[ STDOUT ][ui.py][win None] destroying all widgets
+[ STDOUT ][ui.py][win None] Destroying: chat_select
 [ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
-[ STDOUT ][msgr.py][info] ===================== LOADING GENERAL
-[ STDOUT ][ui.py][win messendzher] creating widget back_to_chat_select
-[ STDOUT ][ui.py][back_to_chat_select] build pack
-[ STDOUT ][ui.py][win messendzher] creating widget chat_label
-[ STDOUT ][ui.py][chat_label] build pack
-[ STDOUT ][ui.py][win messendzher] creating widget send_entry
-[ STDOUT ][ui.py][win messendzher] creating widget send_private_button
-[ STDOUT ][ui.py][back_to_chat_select] back_to_chat_select destroyed
-[ STDOUT ][ui.py][chat_label] chat_label destroyed
-[ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
-[ STDOUT ][msgr.py][info] ===================== LOADING CHAT SELECT
-[ STDOUT ][msgr.py][info] loading theme hh
-[ STDOUT ]('General',)
-[ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
-[ STDOUT ][msgr.py][info] ===================== LOADING GENERAL
-[ STDOUT ][ui.py][win messendzher] creating widget back_to_chat_select
-[ STDOUT ][ui.py][back_to_chat_select] build pack
-[ STDOUT ][ui.py][win messendzher] creating widget chat_label
-[ STDOUT ][ui.py][chat_label] build pack
-[ STDOUT ][ui.py][win messendzher] creating widget send_entry
-[ STDOUT ][ui.py][send_entry] send_entry destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget send_private_button
-[ STDOUT ][ui.py][send_private_button] send_private_button destroyed
-[ STDOUT ]Failed to lift .!popup
-[ STDOUT ][ui.py][back_to_chat_select] back_to_chat_select destroyed
-[ STDOUT ][ui.py][chat_label] chat_label destroyed
-[ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
-[ STDOUT ][msgr.py][info] ===================== LOADING CHAT SELECT
-[ STDOUT ][msgr.py][info] loading theme hh
-[ STDOUT ]Failed to lift .!popup
-[ STDOUT ]('General',)
-[ STDOUT ][ui.py][chat_select] chat_select destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget chat_select
-[ STDOUT ][msgr.py][info] ===================== LOADING GENERAL
-[ STDOUT ][ui.py][win messendzher] creating widget back_to_chat_select
-[ STDOUT ][ui.py][back_to_chat_select] build pack
-[ STDOUT ][ui.py][win messendzher] creating widget chat_label
-[ STDOUT ][ui.py][chat_label] build pack
-[ STDOUT ][ui.py][win messendzher] creating widget send_entry
-[ STDOUT ][ui.py][send_entry] send_entry destroyed
-[ STDOUT ][ui.py][win messendzher] creating widget send_private_button
-[ STDOUT ][ui.py][send_private_button] send_private_button destroyed
-[ STDOUT ]Failed to lift .!popup
+[ STDOUT ]nastroyki
+[ STDOUT ]Hello Penis
 [ STDOUT ]unauthorized quit n 1, lopping
-[ STDOUT ][msgr.py][info] exited with reinit_ui_counter = 10
+[ STDOUT ][msgr.py][info] exited with reinit_ui_counter = 5
 [ STDOUT ][msgr.py][info] stopping program
 [ STDOUT ][msgr.py][info] shutdown all threads
 [ STDOUT ][msgr.py][info] num: 0

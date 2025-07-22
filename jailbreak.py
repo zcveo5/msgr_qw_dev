@@ -54,7 +54,7 @@ class ModWin(ui.Win):
         except io.UnsupportedOperation:
             temp = ['READY', '[msgr.py][info] BTAEML LOADED']
             Button(text='[ JAILBREAK ] quit this window cycle', command=self.quit).pack()
-        if 'READY' in temp and eval(os.environ['__JailBreak_CODE_CONFIG__'])['bypass_script'] == 'default' or '[msgr.py][info] BTAEML LOADED' in temp and eval(os.environ['__JailBreak_CODE_CONFIG__'])['bypass_script'] == 'srv':
+        if 'READY' in temp and eval(os.environ['__JailBreak_CODE_CONFIG__'])['bypass_script'] == 'default' or 'Servers connection Completed' in temp and eval(os.environ['__JailBreak_CODE_CONFIG__'])['bypass_script'] == 'srv':
             print('$JB Final mainloop')
             if not os.path.exists('./data/JBTweaks'):
                 print('$JB Running setup...')
@@ -62,7 +62,7 @@ class ModWin(ui.Win):
             super().mainloop(n)
         else:
             print('$JB Skipping non-final mainloop')
-    def title(self, t):
+    def title(self, t=''):
         super().title(f'{t} | JailBreak {self.adv}')
 
     def orig_mainloop(self):

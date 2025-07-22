@@ -17,8 +17,6 @@ from tkinter import ttk
 from tkinter.ttk import Combobox
 from tkinter.messagebox import askyesno, showerror
 
-tk.Tk = ui.Popup
-
 auth = data.lib.connect.auth
 chat_lib = data.lib.connect.chat
 work = True
@@ -68,13 +66,11 @@ class Settings(ui.SidePanelRevision):
             wid.pack(anchor='nw')
 
 
-    @staticmethod
-    def create_copy(wid: tk.Button):
+    def create_copy(self, wid: tk.Button):
         wid_class = wid.__class__
-        new_widget = wid_class()
+        new_widget = wid_class(self._o)
         for _cfg_elem in wid.keys():
             new_widget.config({_cfg_elem: wid[_cfg_elem]})
-
         return new_widget
 
 
@@ -87,7 +83,9 @@ class Settings(ui.SidePanelRevision):
             self.destroy()
             self._create_base()
             super().build()
+        
 
+        
     def toggle_theme(self):
         global default_fg, default_bg
         if self.theme == 'light':
@@ -407,7 +405,7 @@ class Debug:
             Button(debugger, text='info', command=lambda: show('inf', f'ver: {version}\nroute to executable file: {__file__}\nfile name: {__name__}\napp enc: {encoding}')).grid(column=1, row=100)
 
 
-        self.debugger = tk.Tk()
+        self.debugger = ui.Popup()
         debugger = self.debugger
         debugger.title('DEBUGTOOLS')
         debugger.resizable(False, False)
@@ -427,7 +425,7 @@ class Debug:
             else:
                 log_inf.configure(text='log_any_change_in_file:T')
             log_inf_bool = not log_inf_bool
-        win = tk.Tk()
+        win = ui.Popup()
         win.title(f'Statistics t:{threading.enumerate().index(threading.current_thread())}')
         win.resizable(False, False)
         info = Label(win, text='', justify=tk.LEFT)
@@ -523,7 +521,7 @@ class Debug:
             name_plug.insert("0", conf_plug['name'])
             class_plug.insert("0", conf_plug['class'])
 
-        win = tk.Tk()
+        win = ui.Popup()
         win.title('Plugin Create')
         win.resizable(False, False)
         name_plug = Entry(win)
@@ -554,7 +552,7 @@ class Debug:
 
         try:
             cc = base_conf['CC']
-            editor_win = tk.Tk()
+            editor_win = ui.Popup()
             txt = Text(editor_win)
             txt.grid(column=0, row=0, columnspan=2)
             Button(editor_win, text='Save', command=save).grid(column=0, row=1)
@@ -637,7 +635,7 @@ class Debug:
         def conf(sc, dpi):
             user_local_settings['USER_SETTINGS']['SCREEN_SETTINGS'] = [float(sc), int(dpi)]
 
-        tk_setts = tk.Tk()
+        tk_setts = ui.Popup()
         tk_setts.resizable(False, False)
         Label(tk_setts, text='This settings may break msgr. Be accurate').grid(column=0, row=0, columnspan=2)
         tk_scale = Entry(tk_setts)
@@ -652,7 +650,7 @@ class Debug:
 
     @staticmethod
     def globals_explorer():
-        glb_exp = tk.Tk()
+        glb_exp = ui.Popup()
         glb = tk.Listbox(glb_exp, height=20, width=100)
         for _i in globals().items():
             if '__' not in _i[0]:
@@ -781,7 +779,7 @@ def plugin_info():
 
 def show(title, text, ret_win=False, custom_close=None, legacy=False):
     if legacy:
-        class _TkM(tk.Tk):
+        class _TkM(ui.Popup):
             def __init__(self):
                 self.looped_btae = False
                 super().__init__()
@@ -1186,7 +1184,7 @@ def read_loaded():
 
 
 def create_custom_theme():
-    theme_create = tk.Tk()
+    theme_create = ui.Popup()
     theme_create.configure(bg=default_bg)
     theme_create.resizable(False, False)
     theme_create.title(locale['cct_title'])
@@ -1316,7 +1314,7 @@ def send_private():
         send_entry.delete("0", tk.END)
         send_entry.insert(tk.END, msg.get())
         send_message(None, True, private_addr=to_cl.get())
-    win = tk.Tk()
+    win = ui.Popup()
     win.title('Private MSG Sender')
     Label(win, text='Private MSG Sender\n--------------------', font=('Consolas', 12), justify=tk.LEFT).pack(anchor='w')
     to_cl = Entry(win)
@@ -1503,7 +1501,7 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
             def commit():
                 globals().update({name.get(): eval(type_v.get())(val.get())})
                 locals().update({name.get(): eval(type_v.get())(val.get())})
-            win = tk.Tk()
+            win = ui.Popup()
             Label(win, text='')
             name = Entry(win)
             name.pack()
@@ -1701,7 +1699,7 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
 
     if eval(dat_d['[SETTINGS]'])['USER_SETTINGS']['FIRST_BOOT'] == 'True':
         pprint('[info] first boot, upa')
-        policy_win = tk.Tk()
+        policy_win = ui.Popup()
         policy_win.title('User Policy Agreement')
         Label(policy_win, text='Please agree with user policy', font=('Consolas', 10)).pack()
         Button(policy_win, text='BTAEML Agreement', command=lambda: exec('import plugins.core.mod\nplugins.core.mod.plugin_info()'), font=('Consolas', 10)).pack()
@@ -1734,7 +1732,7 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
             subprocess.run([sys.executable, 'p2p.py'])
 
 
-        server_select_win = tk.Tk()
+        server_select_win = ui.Popup()
         server_select_win.title(locale['server_select_win'])
         server_select_win.resizable(False, False)
         Label(server_select_win, text=locale['servers_setup_title']).pack()
@@ -1771,7 +1769,7 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
             reload_data_nc()
             win.quit()
 
-        login_win = tk.Tk()
+        login_win = ui.Popup()
         login_win.title(locale['login_txt'])
         login_win.resizable(False, False)
         Label(login_win, text=locale['login_hint']).pack()
@@ -1796,7 +1794,6 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
         except AttributeError:
             bt_server_data = (False, {})
         pprint('bt data')
-        pprint(bt_server_data)
         if not bt_server_data[0] and 'another client' in bt_server_data[1]['answer']:
             printin_load_lbl(bt_server_data[1]['answer'], 'e')
             action_load.configure(text='Exit from account', command=other_cl.exit_acc)
@@ -1850,6 +1847,8 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
         main.mainloop()
 
     pb.tk.plus()
+
+    print('[info] Servers connection Completed')
 
     my_message = tk.StringVar()
     send_entry = Text()

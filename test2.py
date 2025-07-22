@@ -1,74 +1,38 @@
-import sys
-import time
+import tkinter as tk
 
 
-class DynamicStdout:
-    def __init__(self):
-        self.original_stdout = sys.stdout
-        self.last_line = None
-        self.count = 0
-        self.first_line = True
+class DragManager:
+    def __init__(self, widget):
+        self.widget = widget
+        self.drag_start_x = 0
+        self.drag_start_y = 0
 
-    def write(self, text):
-        if text.strip():  # Игнорируем пустые строки
-            # Обработка новой строки
-            if text != self.last_line:
-                # Сброс счетчика для новой строки
-                self.count = 0
-                self.last_line = text
-                self.first_line = False
+        widget.bind("<Button-1>", self.on_drag_start)
+        widget.bind("<B1-Motion>", self.on_drag_move)
 
-            # Увеличиваем счетчик для повторяющихся строк
-            self.count += 1
+    def on_drag_start(self, event):
+        self.drag_start_x = event.x
+        self.drag_start_y = event.y
 
-            # Формируем текст с счетчиком
-            output = f"{text.rstrip()} x{self.count}\r"
+        # Визуальный фидбек
+        #self.widget.config(relief=tk.SUNKEN)
 
-            # Для первой строки выводим без возврата каретки
-            if self.first_line:
-                output = f"{text.rstrip()} x{self.count}\n"
+    def on_drag_move(self, event):
+        # Вычисляем новую позицию ОТНОСИТЕЛЬНО окна
+        x = self.widget.winfo_x() + (event.x - self.drag_start_x)
+        y = self.widget.winfo_y() + (event.y - self.drag_start_y)
 
-            self.original_stdout.write(output)
-            self.original_stdout.flush()
-
-    def flush(self):
-        self.original_stdout.flush()
+        # Плавное перемещение БЕЗ пересоздания
+        self.widget.place(x=x, y=y)
 
 
-# Пример использования
-if __name__ == "__main__":
-    # Сохраняем оригинальный stdout
-    original_stdout = sys.stdout
+# Использование
+root = tk.Tk()
+frame = tk.Label(text='Hi')
+frame.place(x=50, y=50)
 
-    try:
-        # Заменяем stdout на наш кастомный объект
-        sys.stdout = DynamicStdout()
+# Применяем менеджер перемещения
+DragManager(frame)
 
-        # Тестовые вызовы print
-        print('Hi')
-        time.sleep(0.5)  # Задержка для наглядности
-        print('Hi')
-        time.sleep(0.5)
-        print('Hi')
-        time.sleep(0.5)
-        print('Hi')
-        time.sleep(0.5)
-        print('Hi')
-        print('Hello')
-        time.sleep(0.5)
-        print('Hi')
-        time.sleep(0.5)
-        print('Hi')
-        time.sleep(0.5)
-        print('Hi')
-        time.sleep(0.5)
-        print('Hi')
-        time.sleep(0.5)
-        print('Hi')
-
-        # Добавим перевод строки в конце
-        sys.stdout.original_stdout.write('\n')
-
-    finally:
-        # Восстанавливаем оригинальный stdout
-        sys.stdout = original_stdout
+root.geometry("400x300")
+root.mainloop()

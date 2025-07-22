@@ -34,7 +34,7 @@ class Plugin:
             #                x=5, y=165, anchor='w')
 
         SettingsModClass = SettingsMod
-        side = Side(glb_msgr.main, [glb_msgr.default_bg, glb_msgr.default_fg, ':'.join(glb_msgr.font_theme)], title='Multi NC Menu')
+        side = Side(glb_msgr.movable_lbl, [glb_msgr.default_bg, glb_msgr.default_fg, ':'.join(glb_msgr.font_theme)], title='Multi NC Menu')
 
     @staticmethod
     def execute():

@@ -62,8 +62,8 @@ class ModWin(ui.Win):
             super().mainloop(n)
         else:
             print('$JB Skipping non-final mainloop')
-    def title(self, *args):
-        super().title(f'JailBreak {self.adv}')
+    def title(self, t):
+        super().title(f'{t} | JailBreak {self.adv}')
 
     def orig_mainloop(self):
         super().mainloop()

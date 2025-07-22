@@ -1,11 +1,9 @@
-import os
-fls = []
+from tkinter import *
 
-for root, folders, files in os.walk('./data/lib'):
-    for file in files:
-        tmp = os.path.join(root, file)
-        if '__pycache__' not in tmp:
-            fls.append(tmp.replace('\\', '/'))
-            print(tmp)
+from data.lib.ui import Popup
 
-print(fls)
+root = Tk()
+
+Popup()
+
+root.mainloop()

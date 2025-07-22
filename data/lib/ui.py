@@ -11,45 +11,68 @@ import data.lib.ru_to_en
 _ADVLOG = False # DO ADVLOG
 _MODULE_LOG = True # DO ANY THIS MODULE LOGS
 
+_windows = []
+_widgets = []
 app_root_window = None
+root_scaling = 1.0
 
-class LogMeta(type):
-    def __new__(cls, name, bases, dct):
-        new_class = super().__new__(cls, name, bases, dct)
-        return new_class
+def lift_popups():
+    for _w in _widgets:
+        if isinstance(_w, Popup):
+            try:
+                _w.lift()
+                _w.focus_set()
+            except TclError:
+                print(f'Failed to lift {_w}')
 
-class AdvLog(metaclass=LogMeta):
-    def __getattribute__(self, name):
-        attr = super().__getattribute__(name)
-        if callable(attr):
-            def wrapper(*args, **kwargs):
-                if isinstance(self, Widget) and _ADVLOG:
-                    args_str = ''
-                    kwa_str = ''
-                    for _arg in args:
-                        args_str += _arg + ', '
-                    for _kwarg_n, _kwarg_v in kwargs.items():
-                        kwa_str += _kwarg_n + '=' + str(_kwarg_v) + ', '
-                    if kwa_str == '':
-                        args_str = args_str[:-2:]
-                    print_adv(f'[advlog][{self._name}] call {self._name}.{name}({args_str}{kwa_str[:-2:]})')
-                elif isinstance(self, Win) and _ADVLOG:
-                    if name not in ['_root', '_nametowidget', '_register', 'deletecommand', 'after', '_substitute']:
-                        args_str = ''
-                        kwa_str = ''
-                        for _arg in args:
-                            args_str += str(_arg) + ', '
-                        for _kwarg_n, _kwarg_v in kwargs.items():
-                            kwa_str += str(_kwarg_n) + '=' + str(_kwarg_v) + ', '
-                        if kwa_str == '':
-                            args_str = args_str[:-2:]
-                        print_adv(f"[advlog][{self}] called {name}({args_str}{kwa_str[:-2:]})")
-                else:
-                    if _ADVLOG:
-                        print_adv(f"[advlog][{self}] called {name}")
-                return attr(*args, **kwargs)
-            return wrapper
-        return attr
+
+def update_win_scaling():
+    print(f'`````````````````````````````{_windows}, {root_scaling}')
+    for _win in _windows:
+        try:
+            _win.tk.call('tk', 'scaling', root_scaling)
+        except TclError:
+            pass
+
+#class LogMeta(type):
+#    def __new__(cls, name, bases, dct):
+#        new_class = super().__new__(cls, name, bases, dct)
+#        return new_class
+#
+#class AdvLog(metaclass=LogMeta):
+#    def __getattribute__(self, name):
+#        attr = super().__getattribute__(name)
+#        if callable(attr):
+#            def wrapper(*args, **kwargs):
+#                if isinstance(self, Widget) and _ADVLOG:
+#                    args_str = ''
+#                    kwa_str = ''
+#                    for _arg in args:
+#                        args_str += _arg + ', '
+#                    for _kwarg_n, _kwarg_v in kwargs.items():
+#                        kwa_str += _kwarg_n + '=' + str(_kwarg_v) + ', '
+#                    if kwa_str == '':
+#                        args_str = args_str[:-2:]
+#                    print_adv(f'[advlog][{self._name}] call {self._name}.{name}({args_str}{kwa_str[:-2:]})')
+#                elif isinstance(self, Win) and _ADVLOG:
+#                    if name not in ['_root', '_nametowidget', '_register', 'deletecommand', 'after', '_substitute']:
+#                        args_str = ''
+#                        kwa_str = ''
+#                        for _arg in args:
+#                            args_str += str(_arg) + ', '
+#                        for _kwarg_n, _kwarg_v in kwargs.items():
+#                            kwa_str += str(_kwarg_n) + '=' + str(_kwarg_v) + ', '
+#                        if kwa_str == '':
+#                            args_str = args_str[:-2:]
+#                        print_adv(f"[advlog][{self}] called {name}({args_str}{kwa_str[:-2:]})")
+#                else:
+#                    if _ADVLOG:
+#                        print_adv(f"[advlog][{self}] called {name}")
+#                return attr(*args, **kwargs)
+#            return wrapper
+#        return attr
+class AdvLog:
+    pass
 
 BLACK_LIST_LOGGING = ['empty name']
 if __name__ != '__main__':
@@ -93,6 +116,7 @@ class Widget(AdvLog):
         self._name = name
         self._place_mode = 'NotPlaced'
         self.destroyed = False
+        _widgets.append(self)
 
     def build(self, mode: Literal['place', 'grid', 'pack'], **kwargs):
         print_adv(f'[{self._name}] build {mode}')
@@ -261,6 +285,7 @@ class Win(tkinter.Tk, AdvLog):
         self.recovery_widgets = []
         self._work_threads = False
         self.bind('<Control-s>', self.recovery)
+        _windows.append(self)
         if app_root_window is None:
             self.force_main()
 
@@ -490,65 +515,97 @@ class SidePanel(SidePanelWidget):
 
 
 class Popup(tkinter.Frame):
-    def __init__(self, master: Win | tkinter.Tk, x: int, y: int, size: list, style: list, title: str = 'Popup'):
+    def __init__(self, master: Win | tkinter.Tk = app_root_window, x: int = 0, y: int = 0, size=None,
+                 style=None, title: str = 'Popup'):
+        if size is None:
+            size = [300, 300]
+        if style is None:
+            style = ['black', 'white', 'Consolas 9']
         self.style = style
-        super().__init__(master, bg=style[0], width=size[0], height=size[1], highlightthickness=2, highlightcolor=style[1])
+        self.size = size
+        super().__init__(master, bg=style[0], width=size[0], height=size[1], highlightthickness=2,
+                         highlightcolor=style[1])
+
         self.pack_propagate(False)
+        self.close_btn = Button(self, text='X', bg=style[0], fg=style[1], font=style[2], command=self.destroy)
+        self.close_btn.pack(anchor='ne')
+        self.title_lbl = Label(self, text=title, bg=style[0], fg=style[1], font=style[2])
+        self.title_lbl.place(x=3, y=0)
+
+        self.bind('<Button-1>', self._start_move)
+        self.bind('<B1-Motion>', self._move)
+
+        self._start_x = 0
+        self._start_y = 0
+
+        _widgets.append(self)
+
         self.place(x=x, y=y, anchor='center')
-        Button(self, text='X', bg=style[0], fg=style[1], font=style[2], command=self.destroy).pack(anchor='ne')
-        Label(self, text=title, bg=style[0], fg=style[1], font=style[2]).place(x=3, y=0)
+
+    def _start_move(self, event):
+        self.lift()
+        self._start_x = event.x
+        self._start_y = event.y
+
+    def _move(self, event):
+        x = (event.widget.winfo_x() + (event.x - self._start_x)) + (self.size[0] // 2)
+        y = (event.widget.winfo_y() + (event.y - self._start_y)) + (self.size[1] // 2)
+        if not self.master.winfo_width() - (self.size[0]) > x - (self.size[0] // 2) > 0:
+            x = self.winfo_x() + (self.winfo_width() // 2)
+        if not self.master.winfo_height() - (self.size[1]) > y - (self.size[1] // 2) > 0:
+            y = self.winfo_y() + (self.winfo_height() // 2)
+        #self.title['text'] = f'{self.master.winfo_width()} > {x} > 0, {self.master.winfo_height()} > {y} > 0'
+        self.place(x=x, y=y)
+
+    def resizable(self, x, y):
+        if x or y:
+            self.pack_propagate(True)
+        else:
+            self.pack_propagate(False)
+
+    def title(self, t):
+        self.title_lbl['text'] = t
+
+
+class SidePanelRevision(Popup):
+    """Revision of SidePanel, using Popup class"""
+    def __init__(self, master: Win = app_root_window, style=None, title: str = 'SidePanelRevision'):
+        if style is None:
+            style = ['black', 'white', 'Consolas 9']
+        super().__init__(master, x=0, y=0, size=[master.winfo_width() // 3, master.winfo_height()], style=style, title=title)
+        self.lift()
+        self.unbind_all('<Button-1>')
+        self.unbind_all('<B1-Motion>')
+        self.place_forget()
+        # Compatibility
+        self._o = self
+        self.build_state = False
+
+    def build(self):
+        self.lift()
+
+        self.close_btn.config(bg=self.style[0], fg=self.style[1], font=self.style[2])
+        self.title_lbl.config(bg=self.style[0], fg=self.style[1], font=self.style[2])
+        self.config(height=self.master.winfo_height(), width=self.master.winfo_width() // 3)
+
+        self.build_state = True
+        self.place(x=0, y=0)
+
+    def destroy(self):
+        self.build_state = False
+        self.place_forget()
+
+    def _move(self, event):
+        ...
+
+    def _start_move(self, event):
+        ...
+
 
 
 class Beta:
-    """Contains unfinished & bugged things"""
-    class Popup(tkinter.Frame):
-        def __init__(self, master: tkinter.Tk, x: int, y: int, size: list, style: list, title: str = 'Popup'):
-            # ui.Beta.Popup(main, 450, 250, [300, 300], [default_bg, default_fg, font_theme])
-
-            self.style = style
-            super().__init__(master, bg=style[0], width=size[0], height=size[1], highlightthickness=2,
-                             highlightcolor=style[1])
-            self.pack_propagate(False)
-            self.place(x=x, y=y, anchor='center')
-
-            Button(self, text='X', bg=style[0], fg=style[1], font=style[2], command=self.destroy).pack(anchor='nw')
-            title = Label(self, text=title, bg=style[0], fg=style[1], font=style[2])
-            title.place(x=20, y=0)
-
-            # перемещение
-            title.bind("<Button-1>", self.start_move)
-            title.bind("<B1-Motion>", self.do_move)
-            self.start_x = None
-            self.start_y = None
-
-        def start_move(self, event):
-            self.start_x = event.x_root
-            self.start_y = event.y_root
-
-        def do_move(self, event):
-            dx = event.x_root - self.start_x
-            dy = event.y_root - self.start_y
-
-            if abs(dx) >= 15 or abs(dy) >= 15:
-                # получаем текущие координаты popup'а
-                current_x = self.winfo_x()
-                current_y = self.winfo_y()
-
-                # смещаем по сетке 15px
-                grid_dx = (dx // 15) * 15
-                grid_dy = (dy // 15) * 15
-
-                new_x = current_x + grid_dx
-                new_y = current_y + grid_dy
-
-
-                # перемещаем
-                self.place(x=new_x, y=new_y)
-
-                # обновляем стартовую точку, чтобы сдвигать дальше по сетке
-                self.start_x += grid_dx
-                self.start_y += grid_dy
-
+    """Contains unfinished & broken things"""
+    pass
 
 if __name__ == '__main__':
     app = Win()

@@ -241,7 +241,6 @@ elif py_ver[0] == 3 and py_ver[1] == 13 and check_for_updates() or '--force-upda
         win.winfo_children()[0]['text'] = 'Update in progress!\ndownloading btaeui...' ; win.update()
         download_patch('3.13', 'btaeui', './data')
 
-
 win.quit() ; win.destroy()
 print('  -  ~  *  LOADER  *  ~  -')
 os.environ['__LOW_LAUNCHER'] = os.path.abspath(__file__)

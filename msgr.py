@@ -1,22 +1,23 @@
-import hashlib
-import os.path
-import shutil
-import socket
-import subprocess
-import sys
-import threading
+import hashlib, os.path, shutil, socket, subprocess, threading, json
 from json import JSONDecodeError
 from pathlib import Path
+
+import data.lib.connect.auth, data.lib.connect.chat
+
+from data.lib.utils import *
+from data.lib.utils2 import *
+
+import data.lib.ui as ui
+from data.lib.ui import Button, Label, Entry, Popup, Win, Text, ProgressBar, Listbox
+from data.lib.encrypting import *
+
+from tkinter import TclError, Frame
+import tkinter as tk
 from tkinter import ttk
 from tkinter.ttk import Combobox
 from tkinter.messagebox import askyesno, showerror
-from data.lib import ui
-from data.lib.ui import *
-from data.lib.utils2 import *
-import data.lib.connect.auth, data.lib.connect.chat
-import tkinter as tk
-import json
-from data.lib.encrypting import *
+
+tk.Tk = ui.Popup
 
 auth = data.lib.connect.auth
 chat_lib = data.lib.connect.chat
@@ -31,9 +32,9 @@ def pprint(v, *args, **kwargs):
 # init classes and functions
 
 
-class Settings(ui.SidePanel):
+class Settings(ui.SidePanelRevision):
     def __init__(self):
-        super().__init__(main, [default_bg, default_fg, ':'.join(font_theme)], _side='R', title=locale['settings_mm_butt'])
+        super().__init__(main, [default_bg, default_fg, font_theme], title=locale['settings_mm_butt'])
         self.window_other = None
         self.window_debug = None
         self.d_b = None
@@ -63,15 +64,12 @@ class Settings(ui.SidePanel):
                            command=self.memory_manage, bg=default_bg)]
 
     def _create_base(self):
-        self.create(Label(), x=-100, y=-100, name='loaded')
-        y = 30
         for wid in self._base_widgets:
-            self.create(self.create_copy(wid), 5, y, f'Settings_Element:{y//30}', anchor='nw')
-            y += 30
+            wid.pack(anchor='nw')
 
 
     @staticmethod
-    def create_copy(wid: Button):
+    def create_copy(wid: tk.Button):
         wid_class = wid.__class__
         new_widget = wid_class()
         for _cfg_elem in wid.keys():
@@ -82,7 +80,7 @@ class Settings(ui.SidePanel):
 
 
     def build(self):
-        if 'loaded' not in self.his:
+        if self.build_state:
             self._create_base()
             super().build()
         else:
@@ -111,7 +109,6 @@ class Settings(ui.SidePanel):
             pprint(event)
             theme(d_b_t.get())
             user_local_settings['USER_SETTINGS']['THEME'] = d_b_t.get()
-            reinit_window()
             dump_data_nc()
             reload_data_nc()
         def set_l(event):
@@ -123,8 +120,8 @@ class Settings(ui.SidePanel):
             dump_data_nc()
             reload_data_nc()
             refresh_locale()
-        pprint(self.his)
         self.window_locale = Popup(main, 450, 250, [300, 300], [default_bg, default_fg, font_theme], title=locale['setting_sub_f_INTERFASE'])
+        self.window_locale.pack_propagate(True)
         self.window_locale.configure(bg=default_bg)
         longs = os.listdir('./data/locale')
         Label(self.window_locale, text=locale['set_locale_txt'], fg=default_fg, bg=default_bg, font=font_theme).pack(anchor='nw', padx=3)
@@ -163,6 +160,7 @@ class Settings(ui.SidePanel):
             except Exception as pip_ex:
                 show('Error', f'{pip_ex}\n{traceback.format_exc()}')
         window_prof = Popup(main, 450, 250, [300, 300], [default_bg, default_fg, font_theme], title=locale['setting_sub_f_PROFILE'])
+        window_prof.pack_propagate(True)
         Label(window_prof, text=f"{locale['curr_acc']}: {username}", bg=default_bg, fg=default_fg,
                font=font_theme).pack(anchor='nw', padx=3)
         Button(window_prof, text=locale['un_login'], command=other_cl.exit_acc, bg=default_bg, fg=default_fg,
@@ -187,6 +185,7 @@ class Settings(ui.SidePanel):
         def upd_ll():
             base_conf['RUNT_ACTION'] = 'LL_Update'
         self.window_other = Popup(main, 450, 250, [300, 300], [default_bg, default_fg, font_theme], title=locale['setting_sub_f_DEBUG'])
+        self.window_other.pack_propagate(True)
         Button(self.window_other, text='cut bt mod loader', command=other_cl.cut_mod).pack(anchor='nw', padx=3)
         Button(self.window_other, text='LowLevel Update From GitHub repository', command=upd_ll).pack(anchor='nw', padx=3)
         Button(self.window_other, text='LowLvl Update from file', command=upd_ll_ff).pack(anchor='nw', padx=3)
@@ -210,6 +209,8 @@ class Settings(ui.SidePanel):
             show('OK', 'Completed!')
         win = Popup(main, 450, 250, [300, 300], [default_bg, default_fg, font_theme],
                                   title=locale['setting_sub_f_MEMORY'])
+        win.pack_propagate(True)
+
         Button(win, text='Delete Messages', command=clear_chat_history, bg=default_bg, fg=default_fg, font=font_theme).pack(anchor='nw')
         Button(win, text='Delete All Temporary Files', command=clear_pycache, bg=default_bg, fg=default_fg, font=font_theme).pack(anchor='nw')
 
@@ -321,6 +322,7 @@ class Settings(ui.SidePanel):
                 json.dump(selected_meta, JsonObject(open(f'./plugins/{mods_select.get(mods_select.curselection())}/metadata.json', 'w')))
 
         modl_win = Popup(main, 450, 250, [800, 450], [default_bg, default_fg, font_theme], title='Plugins Repository')
+        #modl_win.pack_propagate(True)
         try:
             raw = []
             try:
@@ -826,7 +828,10 @@ def show(title, text, ret_win=False, custom_close=None, legacy=False):
             if custom_close is not None:
                 custom_close()
             info.destroy()
-        info = Popup(main, 450, 250, [200, 200], [bg, fg, fnt], title)
+        try:
+            info = Popup(main, 450, 250, [200, 200], [bg, fg, fnt], title)
+        except Exception as _show_frame_ex:
+            return show(title, text + f'\nFailed to create ShowFrame: {_show_frame_ex} - {_show_frame_ex.__class__}', ret_win, custom_close, legacy=True)
         info.pack_propagate(True)
         Label(info, text=text, bg=bg, fg=fg, font=fnt, justify=tk.LEFT).pack(anchor='center', pady=30, ipadx=10)
         Button(info, text='OK', bg=bg, fg=fg, font=fnt, command=exit_mb).pack(anchor='se', side='bottom', expand=True, ipadx=10, ipady=5)
@@ -855,24 +860,59 @@ def theme(file2, ret=False):
     default_fg = theme_[1]
     default_bg = theme_[0]
     user_local_settings['USER_SETTINGS']['THEME'] = file2.replace('.theme', '')
+    main.option_add('*Font', font_theme)
+    main.option_add('*Background', default_bg)
+    main.option_add('*Foreground', default_fg)
     settings_cl = Settings()
     if not loading:
-        main.destroy_all_in()
-        reinit_ui(True)
+        commit_theme()
     if ret:
         return font_theme, default_fg, default_bg
     return None
 
 
 def reinit_window(no_reinit_theme=False):
-        global main, chat_window, font_theme, online_listbox
+        global main, chat_window, font_theme, online_listbox, settings_cl
         main.destroy_all_in()
         main.title(locale['WINDOW_TITLE_TEXT'])
         chat_window = Text(main, fg=default_fg, bg=default_bg, font=font_theme, width=110)
         chat_window.place(x=0, y=0)
         main = main
         online_listbox = online_listbox
+        ui.update_win_scaling()
+        settings_cl = Settings()
         refresh(no_reinit_theme)
+
+
+def commit_theme():
+    for _w in main.winfo_children():
+        try:
+            if isinstance(_w, Button | Label | Entry | Text | Listbox | Frame):
+                try:
+                    _w.configure(bg=default_bg)
+                    _w.configure(fg=default_fg)
+                    _w.configure(font=font_theme)
+                except TclError:
+                    pass
+                if hasattr(_w, 'winfo_children'):
+                    for _w_ch in _w.winfo_children():
+                        if isinstance(_w_ch, Button | Label | Entry | Text | Listbox):
+                            try:
+                                _w_ch.configure(bg=default_bg)
+                                _w_ch.configure(fg=default_fg)
+                                _w_ch.configure(font=font_theme)
+                            except TclError:
+                                pass
+        except TclError:
+            print(f'[!] Failed to commit theme to {_w}')
+    for _w in main.his.values():
+        if isinstance(_w, Button | Label | Entry | Text | Listbox | Frame):
+            try:
+                _w.configure(bg=default_bg)
+                _w.configure(fg=default_fg)
+                _w.configure(font=font_theme)
+            except TclError:
+                pass
 
 
 def change_lng(a):
@@ -962,7 +1002,7 @@ def refresh_locale():
 def send_message(event=None, is_private=False, **kw):
     pprint(event)
     try:
-        to_send = {'text': send_entry.get(), '_show_ip': bt_server_data[1]['answer']['_show_ip'], 'name': username}
+        to_send = {'text': send_entry.get("0.0", 'end'), '_show_ip': bt_server_data[1]['answer']['_show_ip'], 'name': username}
     except KeyError:
         show('Error', 'Not connected to Auth server')
         return
@@ -981,7 +1021,7 @@ def send_message(event=None, is_private=False, **kw):
         read[kw['private_addr']] = chat_lib.private_msgs()[kw['private_addr']]
     else:
         read['General'] = chat_lib.msgs()
-    send_entry.delete("0", tk.END)
+    send_entry.delete("0.0", tk.END)
 
 
 def load_chat(event):
@@ -1011,7 +1051,7 @@ def load_chat(event):
     else:
         read[chat_selected] = chat_lib.private_msgs()[chat_selected].copy()
     unread[chat_selected] = 0
-    reinit_window(True)
+    reinit_ui(True)
 
 
 
@@ -1023,7 +1063,11 @@ def back_to_chat_select():
     main.his.pop('back_to_chat_select')
     main.his['chat_label'].destroy()
     main.his.pop('chat_label')
-    reinit_window(True)
+    chat_window.place_forget()
+    send_entry.place_forget()
+    send_button.place_forget()
+    send_private_button.place_forget()
+    reinit_ui()
 
 
 def reinit_ui(no_reinit_theme=False):
@@ -1037,7 +1081,7 @@ def reinit_ui(no_reinit_theme=False):
     except (KeyError, NameError):
         pass
     try:
-        Button(text=locale['settings_mm_butt'], command=settings_cl.build, bg=default_bg, fg=default_fg, font=font_theme).place(x=800, y=5)
+        Button(text=locale['settings_mm_butt'], command=settings_cl.build, bg=default_bg, fg=default_fg, font=font_theme).place(relx=0.85, rely=0, relheight=0.05, relwidth=0.15)
     except NameError:
         pass
 
@@ -1048,16 +1092,16 @@ def reinit_ui(no_reinit_theme=False):
         if _i == username:
             raw_online_list[raw_online_list.index(_i)] = f'{username} | You'
     var = tk.Variable(main, value=raw_online_list)
-    online_listbox = tk.Listbox(height=18, width=17, bg=default_bg, fg=default_fg, font=font_theme,
+    online_listbox = tk.Listbox(bg=default_bg, fg=default_fg, font=font_theme,
                           listvariable=var)
     online_listbox.bind("<<ListboxSelect>>", load_chat)
-    online_listbox.place(x=777, y=35)
+    online_listbox.place(relx=0.85, rely=0.05, relwidth=0.15, relheight=1)
 
     main.configure(bg=default_bg)
     if 'chat_select' in main.his:
         main.his['chat_select'].destroy()
         main.his.pop('chat_select')
-    chat_select_listbox = main.create('chat_select', tk.Listbox, width=110, height=30, bg=default_bg, fg=default_fg).tk
+    chat_select_listbox = main.create('chat_select', tk.Listbox, width=110, height=30, bg=default_bg, fg=default_fg, font=font_theme).tk
     if chat_select_menu:
         pprint('[info] ===================== LOADING CHAT SELECT')
         if 'General' in unread:
@@ -1076,22 +1120,22 @@ def reinit_ui(no_reinit_theme=False):
                     if unread[chat_name] > 0:
                         res += f' ({unread[chat_name]})'
                 chat_select_listbox.insert(tk.END, res)
-        chat_select_listbox.place(x=0, y=0)
+        chat_select_listbox.place(x=0, y=0, relwidth=0.85, relheight=1)
         chat_select_listbox.bind('<<ListboxSelect>>', load_chat)
     elif chat_selected == 'General':
         pprint('[info] ===================== LOADING GENERAL')
         chat_select_listbox.place_forget()
-        main.create('back_to_chat_select', Button, True, bg=default_bg, fg=default_fg, font=font_theme, text=locale['back'], command=back_to_chat_select).build('place', x=0, y=0)
-        main.create('chat_label', Label, True, bg=default_bg, fg=default_fg, font=font_theme, text=locale['chat_txt'] + ': ' + chat_selected).build('place', x=80, y=0)
-        send_entry = main.create('send_entry', Entry, True, width=110, bg=default_bg, fg=default_fg, font=font_theme, textvariable=my_message).tk
-        send_entry.bind("<Return>", send_message)
-        send_entry.place(x=0, y=400)
+        main.create('back_to_chat_select', Button, True, bg=default_bg, fg=default_fg, font=font_theme, text=locale['back'], command=back_to_chat_select).build('pack', anchor='nw', side='left')
+        main.create('chat_label', Label, True, bg=default_bg, fg=default_fg, font=font_theme, text=locale['chat_txt'] + ': ' + chat_selected).build('pack', anchor='nw', side='left', padx=5, pady=3)
+        send_entry = main.create('send_entry', Text, True, width=110, bg=default_bg, fg=default_fg, font=font_theme).tk
+        send_entry.bind("<Control-Return>", send_message)
+        send_entry.place(x=0, rely=0.8, relwidth=0.75, relheight=0.1)
         send_button = Button(text=locale['send_button'], bg=default_bg, fg=default_fg, font=font_theme, command=send_message)
-        send_button.place(x=800, y=400)
+        send_button.place(relx=0.75, rely=0.8, relwidth=0.10, relheight=0.05)
         send_private_button = main.create('send_private_button', Button, True, text='Send Private', bg=default_bg, fg=default_fg, font=font_theme, command=send_private).tk
-        send_private_button.place(x=800, y=350)
+        send_private_button.place(relx=0.75, rely=0.85, relwidth=0.10, relheight=0.05)
         chat_window.bind('<MouseWheel>', scroll)
-        chat_window.place(x=0, y=30)
+        chat_window.place(relwidth=0.85, relheight=0.8, relx=0, rely=0.05)
     elif chat_selected != 'General':
         pprint(f'[info] ===================== LOADING PRIVATE {chat_selected}')
         chat_window.place_forget()
@@ -1126,6 +1170,9 @@ def reinit_ui(no_reinit_theme=False):
             default_fg = 'white'
         else:
             theme(user_local_settings['USER_SETTINGS']['THEME'])
+
+    ui.lift_popups()
+
     reinit_count += 1
 
 
@@ -1507,7 +1554,7 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
 
 
     main.geometry([900, 500])
-    main.resizable(False, False)
+    #main.resizable(False, False)
     main.title('MSGR QW - Loading')
     pprint('[info] init window and vars')
 
@@ -1586,7 +1633,8 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
     except KeyError:
         user_local_settings['USER_SETTINGS'].update({'SCREEN_SETTINGS': [1.0, 0]})
         main.tk.call('tk', 'scaling', user_local_settings['USER_SETTINGS']['SCREEN_SETTINGS'][0])
-
+    ui.root_scaling = user_local_settings['USER_SETTINGS']['SCREEN_SETTINGS'][0]
+    ui.update_win_scaling()
 
     pprint('[info] loading locale')
     try:
@@ -1770,7 +1818,7 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
             if debug_mode:
                 load_lbl['text'] += f'\nDebug Info:\njust incorrect password for acc {username}\n{bt_server_data}, {password}'
             main.mainloop()
-    except (ConnectionError, IndexError):
+    except Exception as _ex:
         def serv_sel_tmp():
             select_server('')
             dump_data_nc()
@@ -1780,7 +1828,7 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
             load_lbl[
                 'text'] += f'\nDebug Info:\nIncorrect IP in <bt_server> variable.'
         action_load.configure(text='Reset BebraTech server address', command=serv_sel_tmp)
-        pprint(f'[error] Not connected to BebraTech Authentication Server: Server on {bt_server} not found. program loading stopped')
+        pprint(f'[error] Not connected to BebraTech Authentication Server: Server on {bt_server} not found {_ex}')
         main.mainloop()
     pb.tk.plus()
 
@@ -1804,7 +1852,7 @@ if os.path.basename(sys.argv[0]) in ['loader.py', 'launcher.pyw']:
     pb.tk.plus()
 
     my_message = tk.StringVar()
-    send_entry = Entry()
+    send_entry = Text()
 
     if user_local_settings['USER_SETTINGS']['BTAEML'] == 'True':
         from data.lib.plugin_api import exec_plugs, get_plugs

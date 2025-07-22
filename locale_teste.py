@@ -133,7 +133,7 @@ elif cmd == 'find-configs':
                     configs.append(os.path.join(root, file).replace(r'\\'[1::], '/').replace('./', ''))
                 else:
                     print(f'[!] Invalid extension for {file}')
-    print(' '*31+'PATH'+' '*35+'EXT'+' '*7+'CONV'+)
+    print(' '*31+'PATH'+' '*35+'EXT'+' '*7+'CONV')
     for conf in configs:
         ext = os.path.basename(conf).split('.')[1]
         if ext != 'json':
@@ -159,5 +159,27 @@ elif cmd == 'convert-locale':
             print(traceback.format_exc())
             print(lc_formated)
         print('Completed!')
+elif cmd == 'count-strings':
+    files_py = []
+    all_c = 0
+    for root, folders, files in os.walk('./'):
+        if '.venv' not in root:
+            for file in files:
+                if len(file.split('.')) == 1:
+                    print(f'[!] No extension for {file}')
+                elif file.split('.')[1] in ['py']:
+                    print(f'[*] Found {file}')
+                    files_py.append(os.path.join(root, file).replace(r'\\'[1::], '/').replace('./', ''))
+                else:
+                    print(f'[!] Invalid extension for {file}')
+
+    for _file in files_py:
+        c = len(open(_file, 'r', errors='replace').read().split('\n'))
+        all_c += c
+        print(f'{_file}{' '*(70-len(_file))}{c}')
+
+    print(f'\n{' '*10} \ {all_c}')
+
+
 else:
     print('Unknown command')

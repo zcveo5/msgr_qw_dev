@@ -14,8 +14,6 @@ class SideSettings(orig_Settings):
             self._base_widgets += [Button(self._o, text='exit',
                            command=reinit_window, bg=default_bg,
                            fg=default_fg, font=font_theme)]
-        if hasattr(self, 'adv'):
-            self.adv += ' # Compatibility Tweak #'
 
     @staticmethod
     def create(obj=None, *args, **kwargs):
@@ -52,6 +50,8 @@ reinit_window = reinit_window_mod
 globals()['settings'] = SideSettings
 side_settings = globals()['settings']
 Settings = SideSettings
+if hasattr(main, 'adv'):
+    main.adv += ' # Compatibility Tweak #'
 
 orig_reinit = reinit_ui
 def _reinit_ui(*args):
